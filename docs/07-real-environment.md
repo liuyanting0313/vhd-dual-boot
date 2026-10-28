@@ -34,7 +34,8 @@
 
 ```
 磁盘 0 (NVMe 954GB)                  磁盘 1 (NVMe 954GB)
-├─ part1  System     450MB  FAT32    ← ESP\n├─ part2  Reserved    16MB
+├─ part1  System     450MB  FAT32    ← ESP
+├─ part2  Reserved    16MB
 ├─ part3  Basic     951GB  NTFS  D:   ← 物理 Windows（卷标 Windows-SSD）
 └─ part4  Recovery  0.87GB
                                      └─ part2  Basic 953GB NTFS E:  ← 数据盘（卷标 Data）

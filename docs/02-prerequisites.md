@@ -82,7 +82,13 @@ Set-ItemProperty 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Power' 
 ```
 数据盘（卷标 Data）
 └─ VHD\                  ← 所有 VHD 和脚本
-    ├─ Base.vhdx\n    ├─ Work.vhdx\n    ├─ Logs\             ← BCD 备份与快照\n    ├─ state.json\n    ├─ entry-base.json\n    └─ entry-work.json\n```
+    ├─ Base.vhdx
+    ├─ Work.vhdx
+    ├─ Logs\             ← BCD 备份与快照
+    ├─ state.json
+    ├─ entry-base.json
+    └─ entry-work.json
+```
 
 ### 卷标怎么定
 
