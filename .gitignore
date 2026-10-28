@@ -1,0 +1,47 @@
+# ---- VHD / 磁盘镜像（体积巨大，绝不入库）----
+*.vhd
+*.vhdx
+*.avhdx
+*.vhdx.*
+*.bak.vhdx
+*.partial
+
+# ---- BCD 备份与注册表配置单元 ----
+BCD_Backup_*
+BCD_Backup*
+*.LOG1
+*.LOG2
+bcd_enum_*.txt
+
+# ---- 运行期记录（含本机 GUID / 路径 / 时间戳，不适合公开）----
+state.json
+entry-base.json
+entry-work.json
+entry.json
+entry5.json
+*.rolledback-*.json
+
+# ---- 日志 ----
+Logs/
+logs/
+*.log
+
+# ---- Windows ----
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+System Volume Information/
+
+# ---- 编辑器 ----
+.vscode/
+.idea/
+*.swp
+*~
+
+# ---- PowerShell ----
+*.ps1.bak
+*.ps1.bak-*
+
+# ---- AI / 工具缓存 ----
+.cline/
+.cache/
