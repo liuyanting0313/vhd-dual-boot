@@ -13,6 +13,8 @@
 6. [配置记录文件](#6-配置记录文件)
 7. [一个真实的故障案例](#7-一个真实的故障案例)
 
+> 第 5 节末尾附有 `bcdedit /enum {current}` 的完整实测输出，是排查启动问题的第一手参考。
+
 ---
 
 ## 1. 硬件与系统
@@ -178,6 +180,47 @@ Base.vhdx 文件大小             47.65 GB
 ```
 
 > **卷 GUID 在本项目里很重要：** VHDX 内部用 `volume_path` 引用父盘，换盘符不影响。
+
+### `{current}` 的完整内容（进 Work 后实测）
+
+在 Work 系统里跑 `bcdedit /enum {current}`，拿到的就是这个。
+这是全项目最有参考价值的一段输出：
+
+```
+Windows Boot Loader
+-------------------
+identifier              {ced6181f-bae1-11f1-94bc-a085277a74a6}
+device                  vhd=[E:]\VHD\Work.vhdx,locate=custom:12000002
+path                    \Windows\system32\winload.efi
+description             Win11-Work
+locale                  en-US
+inherit                 {6efb52bf-1766-41db-a6b3-0ee5eff72bd7}
+recoverysequence        {da42d6b7-249e-11f1-94a6-b33b1aa7a71c}
+recoveryenabled         No
+isolatedcontext         Yes
+allowedinmemorysettings 0x15000075
+osdevice                vhd=[E:]\VHD\Work.vhdx,locate=custom:22000002
+systemroot              \Windows
+resumeobject            {ced6181a-bae1-11f1-94bc-a085277a74a6}
+nx                      OptIn
+bootmenupolicy          Standard
+hypervisorlaunchtype    Auto
+detecthal               Yes
+```
+
+各处值得注意的地方：
+
+| 字段 | 说明 |
+|---|---|
+| `vhd=[E:]` | **这就是盘符陷阱的铁证**——物理系统里数据盘是 `D:`，Work 里变成 `E:` |
+| `locate=custom:12000002` | Windows 自动加的定位参数，**不要手动改**（见 [pitfalls #10](04-pitfalls.md)） |
+| `device` 与 `osdevice` | 后缀不同（`12000002` vs `22000002`），两个都要设，只改 `device` 启动不了 |
+| `recoveryenabled No` | VHD 启动项的恢复环境被禁用，所以 VHD 系统蓝屏时进不了自动修复 |
+| `isolatedcontext Yes` | VHD 系统与宿主隔离的标志位 |
+| `path \Windows\system32\winload.efi` | UEFI 是 `winload.efi`；Legacy 是 `winload.exe` |
+
+> **验证方法：** 设完启动项后 `bcdedit /enum {guid}` 看到 `vhd=` 出现在
+> `device` **和** `osdevice` 两行里，才算成功。只看一行会漏判（[pitfalls #14](04-pitfalls.md)）。
 
 ---
 
